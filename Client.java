@@ -30,6 +30,7 @@ class Client {
     public static String readMsg(DataInputStream din) {
         String message = "";
         try {
+            // user readline instead, reconfigure
             byte inBytes[] = new byte[din.available() + 64];
             din.read(inBytes);
             for (int i = 0; i < inBytes.length; i++) {
@@ -63,7 +64,8 @@ class Client {
 
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element tElement = (Element) node;
-                    servlist.add(new Object[] { tElement.getAttribute("type"), tElement.getAttribute("coreCount"), tElement.getAttribute("limit") });
+                    servlist.add(new Object[] { tElement.getAttribute("type"), tElement.getAttribute("coreCount"),
+                            tElement.getAttribute("limit") });
                 }
             }
         }
@@ -113,7 +115,8 @@ class Client {
                 // Check for errors, if error found, send to the next server
                 if (response.contains("ERR")) {
                     count++;
-                    // Reset count to send to first server, otherwise will reach out of bounds and try to send to servers that dont exist
+                    // Reset count to send to first server, otherwise will reach out of bounds and
+                    // try to send to servers that dont exist
                     if (count == Integer.parseInt(XMLLimit())) {
                         count = 0;
                     }
