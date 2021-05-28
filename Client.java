@@ -27,16 +27,19 @@ class Client {
         }
     }
 
-    public static String readMsg(DataInputStream din) throws IOException{
-        String message = din.readLine();
+    public static String readMsg(DataInputStream din) {
+        String message = "";
         try {
-            while(din.available() > 0){
+            message = din.readLine();
+            while(din.available() > 0) {
                 message += "\n" + din.readLine();
             }
+
         } catch (Exception e) {
 
             e.printStackTrace();
         }
+        // System.out.println("RCVD " + message);
         return message;
     }
 
@@ -80,7 +83,7 @@ class Client {
         return servlist.get(servlist.size() - 1)[2].toString();
     }
 
-    public static void performHandshake(DataInputStream din, DataOutputStream dout) throws IOException {
+    public static void performHandshake(DataInputStream din, DataOutputStream dout) {
         sendMsg(dout, "HELO");
         readMsg(din);
         sendMsg(dout, "AUTH " + System.getProperty("user.name"));
