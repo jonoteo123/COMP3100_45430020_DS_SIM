@@ -1,3 +1,15 @@
+import java.io.*;
+import java.net.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+
 public class Grouper {
 
     // We want to read three incoming jobs.
@@ -6,11 +18,11 @@ public class Grouper {
     // scheduling it
 
     // We need some global variables
-    // Int Group1EstTime
-    // Int Group2EstTime
-    // Arraylist Group1
-    // Arraylist Group2
-    // hashmap AllGroupEstTime
+    // int Group1EstTime;
+    // int Group2EstTime;
+    // ArrayList<String> Group1 = new ArrayList<String>();
+    // ArrayList<String> Group2 = new ArrayList<String>();
+    // HashMap<String, Integer> AllGroupEstTime = new HashMap<String, Integer>();
 
     // We need some getters
     // get GroupEstimatedTime(group)

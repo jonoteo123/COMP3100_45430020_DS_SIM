@@ -35,7 +35,6 @@ class Client {
             while(din.available() > 0) {
                 message += "\n" + din.readLine();
             }
-
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -74,7 +73,7 @@ class Client {
     }
 
     // Pull largest server name
-    public static String XMLFileParser() {
+    public static String XML_LargestServer() {
         return servlist.get(servlist.size() - 1)[0].toString();
     }
 
@@ -107,7 +106,7 @@ class Client {
         String response = readMsg(din);
         while (!response.contains("NONE")) {
             if (response.contains("JOBN")) {
-                sendMsg(dout, "SCHD " + response.split("\\s+")[2] + " " + XMLFileParser() + " " + count);
+                sendMsg(dout, "SCHD " + response.split("\\s+")[2] + " " + XML_LargestServer() + " " + count);
                 response = readMsg(din);
 
                 // Check for errors, if error found, send to the next server
@@ -118,7 +117,7 @@ class Client {
                     if (count == Integer.parseInt(XMLLimit())) {
                         count = 0;
                     }
-                    sendMsg(dout, "SCHD " + response.split("\\s+")[2] + XMLFileParser() + " " + count);
+                    sendMsg(dout, "SCHD " + response.split("\\s+")[2] + XML_LargestServer() + " " + count);
                     response = readMsg(din);
                 }
 
