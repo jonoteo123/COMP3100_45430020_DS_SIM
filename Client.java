@@ -31,6 +31,7 @@ class Client {
         String message = "";
         try {
             message = din.readLine();
+
             while(din.available() > 0) {
                 message += "\n" + din.readLine();
             }
@@ -39,7 +40,6 @@ class Client {
 
             e.printStackTrace();
         }
-        // System.out.println("RCVD " + message);
         return message;
     }
 
@@ -95,11 +95,11 @@ class Client {
         DataInputStream din = new DataInputStream(s.getInputStream());
         DataOutputStream dout = new DataOutputStream(s.getOutputStream());
 
-        // Pull ds-system.xml, grab type, coreCount and limit
-        retrieveXML();
-
         // Start handshake
         performHandshake(din, dout);
+
+        // Pull ds-system.xml, grab type, coreCount and limit
+        retrieveXML();
 
         // Ready to start receiving jobs
         sendMsg(dout, "REDY");
