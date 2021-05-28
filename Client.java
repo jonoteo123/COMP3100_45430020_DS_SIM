@@ -31,12 +31,9 @@ class Client {
         String message = "";
         try {
             // user readline instead, reconfigure
-            byte inBytes[] = new byte[din.available() + 64];
-            din.read(inBytes);
-            for (int i = 0; i < inBytes.length; i++) {
-                message += (char) inBytes[i];
+            while(din.available() > 0) {
+                message += din.readLine();
             }
-
         } catch (Exception e) {
 
             e.printStackTrace();
