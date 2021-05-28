@@ -102,8 +102,10 @@ class Client {
 
         // Ready to start receiving jobs
         sendMsg(dout, "REDY");
+
         int count = 0;
         String response = readMsg(din);
+        
         while (!response.contains("NONE")) {
             if (response.contains("JOBN")) {
                 sendMsg(dout, "SCHD " + response.split("\\s+")[2] + " " + XML_LargestServer() + " " + count);
