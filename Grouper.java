@@ -26,40 +26,53 @@ public class Grouper {
         return job;
     }
 
-
-
     public static void main(String args[]) throws Exception {
         int count = 0;
         String response = readMsg(din);
         List<String> job = new ArrayList<String>();
-        int tempid;
+        int previd = 0;
+        int currentid = 0;
+        int prevjobtime = 0;
+        int currentjobtime = 0;
 
         while (!response.contains("NONE")) {
-            if (response.contains("JOBN") || response.contains("JOBP")) {
+            job = defineJob(response);                
+            currentid = Integer.parseInt(job.get(2));
+            currentjobtime = Integer.parseInt(job.get(3));
+            if (previd == currentid) {
                 sendMsg(dout, "PSHJ");
-                job = defineJob(response);
-                tempid = Integer.parseInt(job.get(2));
                 response = readMsg(din);
-
-                // sendMsg(dout, "SCHD " + response.split("\\s+")[2] + " " + XML_LargestServer() + " " + count);
-                // response = readMsg(din);
-
-                // Check for errors, if error found, send to the next server
-                // if (response.contains("ERR")) {
-                //     count++;
-                //     // Reset count to send to first server, otherwise will reach out of bounds and
-                //     // try to send to servers that dont exist
-                //     if (count == Integer.parseInt(XMLLimit())) {
-                //         count = 0;
-                //     }
-                //     sendMsg(dout, "SCHD " + response.split("\\s+")[2] + XML_LargestServer() + " " + count);
-                //     response = readMsg(din);
-                // }
+            } else {
+                if (currentjobtime > prevjobtime) {
+                    sendMsg(dout, "SCHD " + response.split("\\s+")[2] + " " + XML_LargestServer() + " " + count);
+                }
 
             }
-            // Ready for next job
+            prevjobtime = currentjobtime;
+            previd = currentid;
             sendMsg(dout, "REDY");
             response = readMsg(din);
+            // if (response.contains("JOBN") || response.contains("JOBP")) {
+
+
+            //     // sendMsg(dout, "SCHD " + response.split("\\s+")[2] + " " + XML_LargestServer() + " " + count);
+            //     // response = readMsg(din);
+
+            //     // Check for errors, if error found, send to the next server
+            //     // if (response.contains("ERR")) {
+            //     //     count++;
+            //     //     // Reset count to send to first server, otherwise will reach out of bounds and
+            //     //     // try to send to servers that dont exist
+            //     //     if (count == Integer.parseInt(XMLLimit())) {
+            //     //         count = 0;
+            //     //     }
+            //     //     sendMsg(dout, "SCHD " + response.split("\\s+")[2] + XML_LargestServer() + " " + count);
+            //     //     response = readMsg(din);
+            //     // }
+            // }
+            // Ready for next job
+
+
         }
     }
 

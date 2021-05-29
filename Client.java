@@ -112,11 +112,14 @@ class Client {
         int count = 0;
         String response = readMsg(din);
         List<String> job = new ArrayList<String>();
+        int tempid;
         
         while (!response.contains("NONE")) {
             if (response.contains("JOBN")) {
                 // sendMsg(dout, "PSHJ");
                 job = defineJob(response);
+                tempid = Integer.parseInt(job.get(2));
+
                 sendMsg(dout, "SCHD " + job.get(2) + " " + XML_LargestServer() + " " + count);
                 response = readMsg(din);
 
