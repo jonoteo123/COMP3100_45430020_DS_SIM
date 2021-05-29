@@ -39,6 +39,7 @@ class Client {
 
             e.printStackTrace();
         }
+        System.out.println("RCVD " + message);
         return message;
     }
 
@@ -89,6 +90,11 @@ class Client {
         readMsg(din);
     }
 
+    public static List<String> defineJob(String response) {
+        List<String> job = new ArrayList<String>(Arrays.asList(response.split("\\s+")));
+        return job;
+    }
+
     public static void main(String args[]) throws Exception {
         Socket s = new Socket("localhost", 50000);
         DataInputStream din = new DataInputStream(s.getInputStream());
@@ -105,10 +111,13 @@ class Client {
 
         int count = 0;
         String response = readMsg(din);
+        List<String> job = new ArrayList<String>();
         
         while (!response.contains("NONE")) {
             if (response.contains("JOBN")) {
-                sendMsg(dout, "SCHD " + response.split("\\s+")[2] + " " + XML_LargestServer() + " " + count);
+                // sendMsg(dout, "PSHJ");
+                job = defineJob(response);
+                sendMsg(dout, "SCHD " + job.get(2) + " " + XML_LargestServer() + " " + count);
                 response = readMsg(din);
 
                 // Check for errors, if error found, send to the next server
@@ -119,7 +128,7 @@ class Client {
                     if (count == Integer.parseInt(XMLLimit())) {
                         count = 0;
                     }
-                    sendMsg(dout, "SCHD " + response.split("\\s+")[2] + XML_LargestServer() + " " + count);
+                    sendMsg(dout, "SCHD " + job.get(2) + XML_LargestServer() + " " + count);
                     response = readMsg(din);
                 }
 
