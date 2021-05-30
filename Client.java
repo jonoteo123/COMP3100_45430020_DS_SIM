@@ -20,7 +20,7 @@ class Client {
             message = Arrays.copyOf(message, message.length + 1);
             message[message.length - 1] = 10;
             dout.write(message);
-            System.out.println("SENT " + msg);
+            // System.out.println("SENT " + msg);
             dout.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,7 +39,7 @@ class Client {
 
             e.printStackTrace();
         }
-        System.out.println("RCVD " + message);
+        // System.out.println("RCVD " + message);
         return message;
     }
 
@@ -103,43 +103,9 @@ class Client {
         // Start handshake
         performHandshake(din, dout);
 
-        // Pull ds-system.xml, grab type, coreCount and limit
-        retrieveXML();
-
-        // Ready to start receiving jobs
-        sendMsg(dout, "REDY");
-
-        int count = 0;
-        String response = readMsg(din);
-        List<String> job = new ArrayList<String>();
-        int tempid;
-        
-        while (!response.contains("NONE")) {
-            if (response.contains("JOBN")) {
-                // sendMsg(dout, "PSHJ");
-                job = defineJob(response);
-                tempid = Integer.parseInt(job.get(2));
-
-                sendMsg(dout, "SCHD " + job.get(2) + " " + XML_LargestServer() + " " + count);
-                response = readMsg(din);
-
-                // Check for errors, if error found, send to the next server
-                if (response.contains("ERR")) {
-                    count++;
-                    // Reset count to send to first server, otherwise will reach out of bounds and
-                    // try to send to servers that dont exist
-                    if (count == Integer.parseInt(XMLLimit())) {
-                        count = 0;
-                    }
-                    sendMsg(dout, "SCHD " + job.get(2) + XML_LargestServer() + " " + count);
-                    response = readMsg(din);
-                }
-
-            }
-            // Ready for next job
-            sendMsg(dout, "REDY");
-            response = readMsg(din);
-        }
+        // Run the BestFit algorithm
+        BestFit f = new BestFit(s, din, dout);
+        f.run();
 
         // Quit
         sendMsg(dout, "QUIT");
