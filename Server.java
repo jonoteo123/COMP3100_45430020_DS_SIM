@@ -6,11 +6,11 @@ public class Server {
     int core;
     int mem;
     int disk;
-    int wJobs;
-    int rJobs;
+    int waitJobs;
+    int runningJobs;
 
     // Constructors
-    public Server(String serverType, int serverID, String state, int curStartTime, int core, int mem, int disk, int wJobs, int rJobs){
+    public Server(String serverType, int serverID, String state, int curStartTime, int core, int mem, int disk, int waitJobs, int runningJobs){
         this.serverType = serverType;
         this.serverID = serverID;
         this.state = state;
@@ -18,8 +18,8 @@ public class Server {
         this.core = core;
         this.mem = mem;
         this.disk = disk;
-        this.wJobs = wJobs;
-        this.rJobs = rJobs;
+        this.waitJobs = waitJobs;
+        this.runningJobs = runningJobs;
     }
 
     public Server(){};
